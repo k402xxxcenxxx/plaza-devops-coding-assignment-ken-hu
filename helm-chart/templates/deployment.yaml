@@ -23,6 +23,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: HELLO_MSG
+              value: {{ .Values.helloWorldMessage }}
           ports:
             - name: http
               containerPort: 8000
