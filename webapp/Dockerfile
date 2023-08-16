@@ -1,11 +1,9 @@
 FROM python:3.10
 
-WORKDIR /code
+WORKDIR /webapp
 
-COPY ./requirements.txt /code/requirements.txt
+COPY . .
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-COPY ./src /code/src
+RUN pip install --no-cache-dir --upgrade -r /webapp/requirements.txt
 
 CMD ["uvicorn", "src.app:app"]
