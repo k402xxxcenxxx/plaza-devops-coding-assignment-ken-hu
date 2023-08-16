@@ -37,7 +37,9 @@ jobs:
         with:
           python-version: '3.x'
 
-      # TODO: Add step(s) to run tests here
+      - name: Run test
+        run: |
+          cd webapp && pytest tests/
 
       - name: Setup Workload Identity Federation
         id: auth
@@ -55,7 +57,10 @@ jobs:
         run: |
           gcloud auth configure-docker -q eu.gcr.io
 
-      # TODO: Add step(s) to build the docker image and push it to the container registry here
+      - name: Build image and push
+        run: |
+          docker build ./webapp -t $image_repository:latest
+          docker push $image_repository:latest
 
       - name: Configure GKE cluster access
         uses: google-github-actions/get-gke-credentials@v1
@@ -64,4 +69,6 @@ jobs:
           location: ${{ env.CLUSTER_LOCATION }}
           cluster_name: ${{ env.CLUSTER_NAME }}
 
-      # TODO: Add step(s) to install/upgrade the application in the Kubernetes cluster here
+      - name: Deploy
+        run: |
+          helm upgrade --install $helm_release_name -n $namespace --set image.repository="$image_repository",image.tag="latest"
