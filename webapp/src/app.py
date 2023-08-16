@@ -14,11 +14,10 @@ def hello():
     return {"message": f"{settings.hello_msg}"}
 
 
-@app.get("/data")
-def get_star_wars_data():
+@app.get("/data/{id}")
+def get_star_wars_data(id):
     try:
-        # TODO: Replace the "1" in the URL below with the value of a query parameter
-        response = requests.get("https://swapi.dev/api/people/1", timeout=5)
+        response = requests.get(f"https://swapi.dev/api/people/{id}", timeout=5)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.HTTPError as e:
