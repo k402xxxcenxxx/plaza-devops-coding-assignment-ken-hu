@@ -1,13 +1,17 @@
 import requests
 from fastapi import FastAPI, HTTPException
+from pydantic_settings import BaseSettings
 
+class Settings(BaseSettings):
+    hello_msg: str = "Hello, World!"
+
+settings = Settings()
 app = FastAPI()
 
 
 @app.get("/")
 def hello():
-    # TODO: Replace the message below with the value of a configuration parameter
-    return {"message": "Hello, World!"}
+    return {"message": f"{settings.hello_msg}"}
 
 
 @app.get("/data")
